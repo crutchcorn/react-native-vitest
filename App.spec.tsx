@@ -1,11 +1,11 @@
 import React from 'react';
-import {render, screen} from '@testing-library/react-native';
-import '@testing-library/react-native/extend-expect';
-import {Text} from 'react-native';
+import {render, screen} from '@testing-library/react';
+import '@testing-library/jest-dom/vitest';
+import {App} from './App.tsx';
 
 describe('App', () => {
   test('Says hi', async () => {
-    render(<Text>Hello, world!</Text>);
-    expect(screen.getByText('Hello, world!')).toBeOnTheScreen();
+    render(<App />);
+    expect(screen.getByText('Hello, world!')).toBeInTheDocument();
   });
 });
