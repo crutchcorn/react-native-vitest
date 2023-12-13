@@ -22,16 +22,18 @@ const allExtensions = [
 export default defineConfig({
   test: {
     globals: true,
+
     deps: {
       web: {
         transformAssets: true,
+        transformGlobPattern: /node_modules\/(?:react-native|@react-native)/,
       },
       optimizer: {
         web: {
           include: ['react-native'],
           esbuildOptions: {
             plugins: [
-              flow(/node_modules\/.*\.jsx?/),
+              flow(/node_modules\/react-native\/.*\.jsx?/, true),
               {
                 name: 'png',
                 setup(build) {
