@@ -3,28 +3,19 @@ import {
   SafeAreaView,
   ScrollView,
   StatusBar,
-  StyleSheet,
-  Text,
   useColorScheme,
 } from 'react-native';
+import {Text} from 'react-native-elements';
 
 export function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
     <SafeAreaView>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-      />
+      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <ScrollView>
-        <Text style={styles.text}>Hello, world!</Text>
+        <Text h1>Hello, world!</Text>
       </ScrollView>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  text: {
-    color: "red"
-  }
-});
