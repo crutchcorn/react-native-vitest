@@ -49,11 +49,57 @@ export default defineConfig({
     deps: {
       optimizer: {
         web: {
-          include: ['react-native-elements/**/*.js'],
+          include: [
+            'react-native-elements/**/*.js',
+            'react-native-safe-area-context/**/*.js',
+          ],
           extensions: allExtensions,
           esbuildOptions: {
             resolveExtensions: allExtensions,
             plugins: [
+              {
+                name: 'resolver-web-plz',
+                setup(build) {
+                  build.onResolve({filter: /.*/}, args => {
+                    // Check if there is not a .web prefix, if there is, resolve it
+                    // to the same file with the prefix only if the files exists
+                    const webPath = args.path.replace(/(\.[^\.]+)$/, '.web$1');
+                    if (
+                      !args.path.includes('.web.') &&
+                      fs.existsSync(webPath)
+                    ) {
+                      console.log('resolving', args.path, 'to', webPath);
+                      return {
+                        path: webPath,
+                      };
+                    }
+                  });
+                },
+              },
+              {
+                name: 'resolve-react-native-web-plz',
+                setup(build) {
+                  build.onResolve({filter: /^react-native$/}, args => {
+                    // Check if that subpath exists on react-native-web, if it does, resolve it
+                    // otherwise, resolve it to react-native
+                    const webPath = path.resolve(
+                      __dirname,
+                      'node_modules',
+                      'react-native-web',
+                      args.path.replace(/^react-native\//, ''),
+                    );
+                    if (fs.existsSync(webPath)) {
+                      return {
+                        path: webPath,
+                      };
+                    }
+
+                    return {
+                      path: path.resolve(__dirname, 'node_modules', args.path),
+                    };
+                  });
+                },
+              },
               {
                 name: 'png',
                 setup(build) {
