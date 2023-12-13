@@ -74,33 +74,6 @@ export default defineConfig({
             resolveExtensions: allExtensions,
             plugins: [
               {
-                name: 'resolver-web-plz',
-                setup(build) {
-                  build.onResolve({filter: /.*/}, args => {
-                    for (const extPrefix of someEx) {
-                      const {dir, name, ext} = path.parse(args.path);
-                      const newFilename = ext
-                        ? `${name}${extPrefix}${ext}`
-                        : `${name}${extPrefix}`;
-                      let webPath = path.join(dir, newFilename);
-                      // Fix relative paths
-                      if (
-                        !webPath.startsWith('./') &&
-                        args.path.startsWith('./')
-                      ) {
-                        webPath = './' + webPath;
-                      }
-
-                      if (fs.existsSync(webPath)) {
-                        return {
-                          path: webPath,
-                        };
-                      }
-                    }
-                  });
-                },
-              },
-              {
                 name: 'png',
                 setup(build) {
                   build.onLoad({filter: /\.png$/}, async args => {
