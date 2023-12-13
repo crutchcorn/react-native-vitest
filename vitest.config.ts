@@ -45,6 +45,12 @@ export default defineConfig({
         find: 'react-native-vector-icons/MaterialCommunityIcons',
         replacement: 'react-native-vector-icons/dist/MaterialCommunityIcons',
       },
+
+      // Needed for styled-components/native
+      {
+        find: 'postcss-safe-parser',
+        replacement: path.resolve(__dirname, 'vite', 'noop.js'),
+      },
     ],
     environment: 'jsdom',
     server: {
@@ -58,6 +64,8 @@ export default defineConfig({
           include: [
             'react-native-elements/**/*.js',
             'react-native-safe-area-context/**/*.js',
+            'styled-components/dist/**/*.js',
+            'css-to-react-native/**/*.js',
           ],
           extensions: allExtensions,
           esbuildOptions: {
@@ -67,11 +75,20 @@ export default defineConfig({
                 name: 'resolver-web-plz',
                 setup(build) {
                   build.onResolve({filter: /.*/}, args => {
-                    for (const ext of someEx) {
-                      const webPath = args.path.replace(
-                        /(\.[^\.]+)$/,
-                        `${ext}$1`,
-                      );
+                    for (const extPrefix of someEx) {
+                      const {dir, name, ext} = path.parse(args.path);
+                      const newFilename = ext
+                        ? `${name}${extPrefix}${ext}`
+                        : `${name}${extPrefix}`;
+                      let webPath = path.join(dir, newFilename);
+                      // Fix relative paths
+                      if (
+                        !webPath.startsWith('./') &&
+                        args.path.startsWith('./')
+                      ) {
+                        webPath = './' + webPath;
+                      }
+
                       if (fs.existsSync(webPath)) {
                         return {
                           path: webPath,

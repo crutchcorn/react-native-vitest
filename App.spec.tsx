@@ -8,4 +8,9 @@ describe('App', () => {
     render(<App />);
     expect(screen.getByText('Hello, world!')).toBeInTheDocument();
   });
+
+  test('Says bye', async () => {
+    render(<App />);
+    expect(screen.getByText('Bye, world!')).toBeInTheDocument();
+  });
 });
