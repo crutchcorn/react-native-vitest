@@ -26,6 +26,9 @@ const someEx = ['.web', '.browser', '.ios', '.android', '.native'];
 export default defineConfig({
   test: {
     globals: true,
+    env: {
+      TESTING: "true"
+    },
     alias: [
       {
         find: /^react-native\/Libraries\/Utilities\/codegenNativeComponent/,
@@ -53,13 +56,6 @@ export default defineConfig({
     ],
     environment: 'jsdom',
     server: {
-      deps: {
-        // inline: [
-        //   "styled-components",
-        //   "styled-components/native",
-        //   "css-to-react-native",
-        // ],
-      },
       debug: {
         dumpModules: true,
       },
