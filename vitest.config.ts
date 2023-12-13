@@ -54,6 +54,9 @@ export default defineConfig({
     ],
     environment: 'jsdom',
     server: {
+      deps: {
+        inline: [],
+      },
       debug: {
         dumpModules: true,
       },
@@ -64,7 +67,7 @@ export default defineConfig({
           include: [
             'react-native-elements/**/*.js',
             'react-native-safe-area-context/**/*.js',
-            'styled-components/dist/**/*.js',
+            'styled-components/**/*.js',
             'css-to-react-native/**/*.js',
           ],
           extensions: allExtensions,
@@ -128,7 +131,7 @@ export default defineConfig({
                   });
                 },
               },
-              flow(/node_modules/),
+              flow(/node_modules\/react-native/),
               {
                 name: 'load-js-files-as-jsx',
                 setup(build) {
@@ -145,6 +148,47 @@ export default defineConfig({
                       return {contents: file, loader: 'jsx'};
                     },
                   );
+                },
+              },
+              {
+                name: 'resolve-react-native',
+                setup(build) {
+                  build.onResolve({filter: /^react-native$/}, args => {
+                    if (args.importer.includes('react-native-web')) return;
+                    if (args.path.includes('react-native-web')) return;
+
+                    return {
+                      path: path.resolve(
+                        __dirname,
+                        'vite',
+                        'react-native-web.ts',
+                      ),
+                    };
+                  });
+                },
+              },
+              {
+                name: 'resolve-react-native-submodules',
+                setup(build) {
+                  build.onResolve({filter: /(?:^|\/)react-native\//}, args => {
+                    if (args.importer.includes('react-native-web')) return;
+                    if (args.path.includes('react-native-web')) return;
+                    console.log({args});
+                    const subPath = args.path.replace(/.*react-native\//, '');
+                    const newPath = path.resolve(
+                      __dirname,
+                      'node_modules/react-native-web',
+                      subPath,
+                    );
+                    if (!fs.existsSync(newPath)) {
+                      return {
+                        path: path.resolve(__dirname, 'vite', 'noop.js'),
+                      };
+                    }
+                    return {
+                      path: newPath,
+                    };
+                  });
                 },
               },
             ],
