@@ -7,14 +7,14 @@ import {
   Text as RNText,
 } from 'react-native';
 import {Text} from 'react-native-elements';
-import styled from 'styled-components/native';
-
-const RedText = styled(RNText)`
-  color: red;
-`;
+// import styled from 'styled-components/native';
+//
+// const RedText = styled(RNText)`
+//   color: red;
+// `;
 
 const Test = () => {
-  return <RedText>Bye, world!</RedText>;
+  return <RNText>Bye, world!</RNText>;
 };
 
 export function App(): React.JSX.Element {
