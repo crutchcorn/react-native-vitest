@@ -65,6 +65,7 @@ export default defineConfig({
         web: {
           include: [
             'react-native-elements/**/*.js',
+            '@react-navigation/**/*.js',
             'react-native-safe-area-context/**/*.js',
             'styled-components/**/*.js',
             'css-to-react-native/**/*.js',
@@ -121,6 +122,24 @@ export default defineConfig({
                   );
                 },
               },
+              {
+                name: 'resolve-react-native',
+                setup(build) {
+                  build.onLoad({filter: /.*/}, args => {
+                    if (!fs.existsSync(args.path)) return
+                    const source = fs.readFileSync(args.path, 'utf8');
+                    // Replace react-native with react-native-web in code
+                    const replaced = source.replace(
+                      /(['"])react-native(['"])/g,
+                      '$1react-native-web$2',
+                    );
+                    return {
+                      contents: replaced,
+                      loader: 'jsx',
+                    };
+                  })
+                },
+              }
             ],
           },
         },

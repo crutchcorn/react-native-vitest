@@ -8,15 +8,19 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "vitest"
+    "test": "vitest",
+    "test:clean": "rm -rf .vite-node node_modules/.vitest"
   },
   "dependencies": {
+    "@react-navigation/native": "^6.1.9",
+    "@react-navigation/native-stack": "^6.9.17",
     "jsdom": "^23.0.1",
     "react": "18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "0.73.0",
     "react-native-elements": "^3.4.3",
     "react-native-safe-area-context": "^4.8.1",
+    "react-native-screens": "^3.29.0",
     "react-native-vector-icons": "^10.0.2",
     "styled-components": "patch:styled-components@npm%3A6.1.1#~/.yarn/patches/styled-components-npm-6.1.1-10768abb38.patch"
   },
