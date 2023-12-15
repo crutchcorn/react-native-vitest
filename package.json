@@ -12,8 +12,8 @@
     "test:clean": "rm -rf .vite-node node_modules/.vitest"
   },
   "dependencies": {
-    "@react-navigation/native": "^6.1.9",
-    "@react-navigation/native-stack": "^6.9.17",
+    "@react-navigation/native": "patch:@react-navigation/native@npm%3A6.1.9#~/.yarn/patches/@react-navigation-native-npm-6.1.9-d00cf9b566.patch",
+    "@react-navigation/native-stack": "patch:@react-navigation/native-stack@npm%3A6.9.17#~/.yarn/patches/@react-navigation-native-stack-npm-6.9.17-50cd3f510f.patch",
     "jsdom": "^23.0.1",
     "react": "18.2.0",
     "react-dom": "^18.2.0",

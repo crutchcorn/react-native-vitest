@@ -1,0 +1,16 @@
+diff --git a/package.json b/package.json
+index 7ea65464b00921775c06729b63cf045692894843..9b3d6b7e6e244f413540d93f395af73746ebb09c 100644
+--- a/package.json
++++ b/package.json
+@@ -28,6 +28,11 @@
+     "lib",
+     "!**/__tests__"
+   ],
++  "exports": {
++    "import": "./lib/module/index.js",
++    "require": "./lib/commonjs/index.js",
++    "types": "./lib/typescript/src/index.d.ts"
++  },
+   "sideEffects": false,
+   "publishConfig": {
+     "access": "public"

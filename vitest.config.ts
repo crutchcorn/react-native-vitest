@@ -59,6 +59,11 @@ export default defineConfig({
       debug: {
         dumpModules: true,
       },
+      deps: {
+        inline: [
+          /@react-navigation/,
+        ]
+      }
     },
     deps: {
       optimizer: {
