@@ -37,7 +37,7 @@ export default defineConfig({
       {find: /^react-native\/(.*)/, replacement: 'react-native-web/$1'},
       {
         find: /^react-native$/,
-        replacement: path.resolve(__dirname, 'vite', 'react-native-web.ts'),
+        replacement: path.resolve(__dirname, 'vite', 'react-native-web.js'),
       },
       {
         find: 'react-native-vector-icons/MaterialIcons',
@@ -128,10 +128,11 @@ export default defineConfig({
                   build.onLoad({filter: /.*/}, args => {
                     if (!fs.existsSync(args.path)) return
                     const source = fs.readFileSync(args.path, 'utf8');
+                    const ourRNW = path.resolve(__dirname, "vite", "react-native-web")
                     // Replace react-native with react-native-web in code
                     const replaced = source.replace(
-                      /(['"])react-native(['"])/g,
-                      '$1react-native-web$2',
+                      /require\(\s*(['"])react-native(['"])\s*\)/g,
+                      `require($1${ourRNW}$2)`,
                     );
                     return {
                       contents: replaced,

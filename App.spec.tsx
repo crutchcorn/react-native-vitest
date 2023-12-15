@@ -5,8 +5,11 @@ import {App} from './App.tsx';
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {Text} from "react-native";
+import {userEvent} from "@testing-library/user-event";
 
 const Stack = createNativeStackNavigator();
+
+const user = userEvent.setup()
 
 function Test() {
   return <Text>Test</Text>
@@ -35,7 +38,7 @@ describe('App', () => {
   test("Navigates", async () => {
     renderApp();
     expect(screen.getByText('Hello, world!')).toBeInTheDocument();
-    screen.getByText("Click me").click();
+    user.click(screen.getByText("Click me"));
     expect(screen.getByText("Test")).toBeInTheDocument();
   })
 });
